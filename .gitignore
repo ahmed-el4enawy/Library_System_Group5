@@ -1,10 +1,24 @@
-HELP.md
+# --- Maven ---
 target/
+*.jar
+*.war
+*.zip
+*.tar.gz
+*.rar
+# Excluding the wrapper jar keeps the repo light; the scripts will download it if needed
 .mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
 
-### STS ###
+# --- IntelliJ IDEA ---
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+# Exclude specific IDE logs and search data
+cmake-build-*/
+.navigation/
+
+# --- Eclipse ---
 .apt_generated
 .classpath
 .factorypath
@@ -13,21 +27,22 @@ target/
 .springBeans
 .sts4-cache
 
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
-
-### NetBeans ###
+# --- NetBeans ---
 /nbproject/private/
 /nbbuild/
 /dist/
 /nbdist/
 /.nb-gradle/
 build/
-!**/src/main/**/build/
-!**/src/test/**/build/
 
-### VS Code ###
+# --- VS Code ---
 .vscode/
+
+# --- Logs and OS files ---
+*.log
+.DS_Store
+Thumbs.db
+
+# --- Local Configuration ---
+# Ignore local environment properties so they don't overwrite others' settings
+application-local.properties
