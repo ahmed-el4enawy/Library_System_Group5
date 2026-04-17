@@ -2,7 +2,9 @@ package com.example.librarymanagementsystem.controller;
 
 import com.example.librarymanagementsystem.dto.AuthorRequestDTO;
 import com.example.librarymanagementsystem.dto.AuthorResponseDTO;
+import com.example.librarymanagementsystem.dto.BookResponseDTO;
 import com.example.librarymanagementsystem.service.AuthorService;
+import com.example.librarymanagementsystem.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,12 +12,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController // Marks this class as a REST API controller
-@RequestMapping("/api/authors") // Base URL for all endpoints in this class
+@RestController
+@RequestMapping("/api/authors")
 @RequiredArgsConstructor
 public class AuthorController {
 
     private final AuthorService authorService;
+    private final BookService bookService; // ← ADDED: needed for the /books endpoint
 
     // POST /api/authors -> Creates a new author
     @PostMapping
@@ -46,5 +49,11 @@ public class AuthorController {
     public ResponseEntity<Void> deleteAuthor(@PathVariable Long id) {
         authorService.deleteAuthor(id);
         return ResponseEntity.noContent().build(); // Returns 204 No Content upon successful deletion
+    }
+
+    // ← ADDED: GET /api/authors/{id}/books -> Get all books by a specific author
+    @GetMapping("/{id}/books")
+    public ResponseEntity<List<BookResponseDTO>> getBooksByAuthor(@PathVariable Long id) {
+        return ResponseEntity.ok(bookService.getBooksByAuthorId(id));
     }
 }
