@@ -10,8 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/api/borrow")
+@RequestMapping("/api/borrow-records")
 @RequiredArgsConstructor
 public class BorrowRecordController {
 
@@ -29,9 +31,21 @@ public class BorrowRecordController {
         return ResponseEntity.ok(borrowRecordService.returnBook(id));
     }
 
-    // GET /api/borrow -> Get all borrow records (paginated)
+    // GET /api/borrow-records -> Get all borrow records (paginated)
     @GetMapping
     public ResponseEntity<Page<BorrowResponseDTO>> getAllRecords(Pageable pageable) {
         return ResponseEntity.ok(borrowRecordService.getAllRecords(pageable));
+    }
+
+    // GET /api/borrow-records/member/{memberId} -> Get all borrow records for a specific member
+    @GetMapping("/member/{memberId}")
+    public ResponseEntity<List<BorrowResponseDTO>> getRecordsByMemberId(@PathVariable Long memberId) {
+        return ResponseEntity.ok(borrowRecordService.getRecordsByMemberId(memberId));
+    }
+
+    // GET /api/borrow-records/active -> Get all currently borrowed books
+    @GetMapping("/active")
+    public ResponseEntity<List<BorrowResponseDTO>> getActiveBorrowRecords() {
+        return ResponseEntity.ok(borrowRecordService.getActiveBorrowRecords());
     }
 }

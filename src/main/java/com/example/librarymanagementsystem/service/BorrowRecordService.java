@@ -17,6 +17,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -72,5 +74,25 @@ public class BorrowRecordService {
     public Page<BorrowResponseDTO> getAllRecords(Pageable pageable) {
         return borrowRecordRepository.findAllWithDetails(pageable)
                 .map(borrowRecordMapper::toDto);
+    }
+
+    // Get all borrow records for a specific member
+    public List<BorrowResponseDTO> getRecordsByMemberId(Long memberId) {
+        // Fail-fast if the member doesn't exist
+        if (!memberRepository.existsById(memberId)) {
+            throw new ResourceNotFoundException("Member not found with id: " + memberId);
+        }
+        return borrowRecordRepository.findByMemberId(memberId)
+                .stream()
+                .map(borrowRecordMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    // Get all currently borrowed books (active records)
+    public List<BorrowResponseDTO> getActiveBorrowRecords() {
+        return borrowRecordRepository.findActiveBorrowRecords()
+                .stream()
+                .map(borrowRecordMapper::toDto)
+                .collect(Collectors.toList());
     }
 }
