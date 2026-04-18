@@ -30,3 +30,7 @@ Once the application is running, you can inspect the H2 embedded database:
 
 ## N+1 Analysis
 By default, the mapping relationship from a `Book` to an `Author` utilizes `@ManyToOne(fetch = FetchType.LAZY)` to avoid fetching unneeded data. However, the `GET /api/books` (getAllBooks) endpoint would natively suffer from the N+1 select problem by issuing a primary query to load all books, followed by additional individual select queries for each author. We effectively resolved this in the `BookRepository` by using the `JOIN FETCH` directive in our custom JPQL queries (e.g., `SELECT b FROM Book b JOIN FETCH b.author`). This command forces Hibernate to load both the Book and its Author concurrently in a single, optimized SQL query, fully resolving the N+1 issue.
+
+## Postman Collection
+A full Postman collection covering all endpoints in the system can be accessed here:
+[Library System Endpoints Collection](https://web.postman.co/workspace/My-Workspace~bec71d38-d5b9-48c6-8101-13682a4960d2/collection/44442320-a94cb5cd-0361-4759-947b-93da11563daf?action=share&source=copy-link&creator=44442320)
